@@ -20,7 +20,7 @@ def add(left : int, right : int):
 	
 @bot.command()
 @asyncio.coroutine
-def минус(left : int, right : int):
+def РјРёРЅСѓСЃ(left : int, right : int):
     yield from bot.say(left - right)
 
 @bot.command()
