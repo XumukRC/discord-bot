@@ -1,26 +1,31 @@
 import discord
 from discord.ext import commands
 import random
+import asyncio
 
 bot = commands.Bot(command_prefix='?')
 
 @bot.event
-async def on_ready():
+@asyncio.coroutine
+ def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
     print('------')
 
 @bot.command()
-async def add(left : int, right : int):
+@asyncio.coroutine
+ def add(left : int, right : int):
     await bot.say(left + right)
 	
 @bot.command()
-async def минус(left : int, right : int):
+@asyncio.coroutine
+ def минус(left : int, right : int):
     await bot.say(left - right)
 
 @bot.command()
-async def roll(dice : str):
+@asyncio.coroutine
+ def roll(dice : str):
     try:
         rolls, limit = map(int, dice.split('d'))
     except Exception:
@@ -31,25 +36,30 @@ async def roll(dice : str):
     await bot.say(result)
 
 @bot.command()
-async def choose(*choices : str):
+@asyncio.coroutine
+ def choose(*choices : str):
     await bot.say(random.choice(choices))
 
 @bot.command()
-async def repeat(times : int, content='repeating...'):
+@asyncio.coroutine
+ def repeat(times : int, content='repeating...'):
     for i in range(times):
         await bot.say(content)
 
 @bot.command()
-async def joined(member : discord.Member):
+@asyncio.coroutine
+ def joined(member : discord.Member):
     await bot.say('{0.name} joined in {0.joined_at}'.format(member))
 
 @bot.group(pass_context=True)
-async def cool(ctx):
+@asyncio.coroutine
+ def cool(ctx):
     if ctx.invoked_subcommand is None:
         await bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
 
 @cool.command()
-async def bob():
+@asyncio.coroutine
+ def bob():
     await bot.say('Yes, bob is cool.')
 
 bot.run('haitaka@yandex.ru', '22:=Kp|/|cToF')
