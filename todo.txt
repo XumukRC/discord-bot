@@ -1,0 +1,72 @@
+!help fun
+	!8ball question
+					Answers the question
+	!coin
+					Flips a coin
+	!decide something or something...
+					Decides between given words
+	!drama
+					Responds with a random drama image
+	!meme meme name "top text" "bottom text"
+					Creates a meme with the given meme name and text
+	!quote
+					Writes a random quote
+	!roll times sides
+					Rolls the dice a number of times with a number of sides
+	!snoopify sentence
+					Snoopifies tha sentence
+!help useful
+	!gif gif tags
+					Gets a gif from Giphy matching the given tags
+	!join-server invitation link
+					Joins the server the bot is invited to
+	!urban search terms
+					Returns the summary of the first matching search result from Urban Dictionary
+	!wiki search terms
+					Returns the summary of the first matching search result from Wikipedia
+	!youtube video tags
+					Gets a video from Youtube matching the given tags
+!help info
+	!avatar @username
+					Responds with the Avatar of the user, if no user is written, your avatar
+	!serverinfo
+					Gives information about the server
+	!serverlist
+					Lists all the servers the bot is connected to
+	!servers
+					Lists how many servers, channels and users the bot is connected to
+	!uptime
+					Shows how long the bot has been online
+	!userinfo @username
+					Gives information about the user, if no user is written, yourself
+!rus music
+	!join название канала
+					Присоединюсь на голосовой канал
+	!dj 
+					Сменю текстовый канал для вывода списков музыки и истории
+					(по умолчанию задан при прописывании !join)
+	!play
+					Let's spin this shit!
+	!c 
+					Что играет?
+	!skip
+					Пропущу текущий трек
+	!stop 
+					Emm, let's stop this shit?
+	!q название трека
+					Добавлю трек в плейлист, если ничего не указано отображу очередь
+	!h 
+					История воспроизведения (последние 80)
+	!clearqueue 
+					Очищу очередь воспроизведения
+	!add 
+					Список имеющихся треков
+	!update 
+					Обновлю список доступной музыки
+!help other
+	!kappa
+	!kappaHD
+	!starwars4
+	!starwars5
+	!правая
+	!ви___
