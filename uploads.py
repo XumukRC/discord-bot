@@ -1,7 +1,7 @@
 import discord
 from connect import bot
 
-print "test3"
+print("test3")
 
 @bot.event
 async def on_message(message):

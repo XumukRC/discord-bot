@@ -6,7 +6,7 @@ import random
 from connect import bot
 import uploads
 
-print "test1"
+print("test1")
 
 @bot.event
 async def on_ready():
