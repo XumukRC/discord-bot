@@ -8,4 +8,4 @@ async def on_message(message):
         return
 
     msg = 'Hello {0.attachments}'.format(message)
-    await bot.say(msg)
+    await bot.send_message(message.channel, msg)
