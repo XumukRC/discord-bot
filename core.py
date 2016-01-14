@@ -1,18 +1,10 @@
 #!/usr/bin/env python3.5
 
 import discord
-from discord.ext import commands
 import random
-from uploads import *
 
-bot = commands.Bot(command_prefix='%')
-
-@bot.event
-async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
+from connect import bot
+import uploads
 
 @bot.command()
 async def add(left : int, right : int):
@@ -48,7 +40,5 @@ async def cool(ctx):
         await bot.say('No, {0.subcommand_passed} is not cool'.format(ctx))
 
 @cool.command()
-async def bob():
-    await bot.say('Yes, bob is cool.')
-
-bot.run('haitaka@yandex.ru', '22:=Kp|/|cToF')
+async def haitaka():
+    await bot.say('Yes, Haitaka is cool.')
