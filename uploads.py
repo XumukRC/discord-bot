@@ -1,6 +1,8 @@
 import discord
 from connect import bot
 
+print "test3"
+
 @bot.event
 async def on_message(message):
     # we do not want the bot to reply to itself
