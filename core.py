@@ -6,8 +6,6 @@ import random
 from connect import bot
 import uploads
 
-print("test1")
-
 @bot.event
 async def on_ready():
     print('Logged in as')
