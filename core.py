@@ -42,3 +42,6 @@ async def cool(ctx):
 @cool.command()
 async def haitaka():
     await bot.say('Yes, Haitaka is cool.')
+	
+	
+bot.run('haitaka@yandex.ru', '22:=Kp|/|cToF')
