@@ -3,6 +3,7 @@
 import discord
 from discord.ext import commands
 import random
+import uploads
 
 bot = commands.Bot(command_prefix='%')
 
