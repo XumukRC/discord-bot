@@ -11,8 +11,8 @@ async def on_message(message):
 	await bot.process_commands(message)
 	
 	if message.channel.name == "uploads_test" and message.attachments:
-		upload = requests.get(message.attachments[0]["url"])
-		mime = magic.from_buffer(upload, mime=True)
+		upload = requests.get(message.attachments[0]["url"], stream=True)
+		mime = magic.from_buffer(upload.raw, mime=True)
 		if mime.startswith("audio"):
 			db_conn = sqlite3.connect('uploads.db')
 			db_cur = db_conn.cursor()
