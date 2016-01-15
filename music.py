@@ -8,10 +8,10 @@ import uploads
 if not discord.opus.is_loaded():
 	discord.opus.load_opus('/usr/local/lib/libopus.so')
 
-@bot.command()
-async def join(channel_name : str):
+@bot.command(pass_context=True)
+async def join(context, channel_name : str):
 	check = lambda c: c.name == channel_name and c.type == discord.ChannelType.voice
-	channel = discord.utils.find(check, message.server.channels)
+	channel = discord.utils.find(check, context.message.server.channels)
 	if channel is None:
 		await bot.say('Cannot find a voice channel by that name.')
 	await bot.join_voice_channel(channel)
