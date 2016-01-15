@@ -11,9 +11,9 @@ async def on_message(message):
 	await bot.process_commands(message)
 	
 	if message.channel.name == "uploads_test" and message.attachments:
-		upload = requests.get(message.attachments[0]["url"], stream=True)
-		mime = magic.from_buffer(upload.raw, mime=True)
-		if mime.startswith("audio"):
+		upload = requests.get(message.attachments[0]["url"])
+		mime = magic.from_buffer(upload.content, mime=True)
+		if mime.startswith(b"audio"):
 			db_conn = sqlite3.connect('uploads.db')
 			db_cur = db_conn.cursor()
 			db_cur.execute("INSERT INTO songs (uploader, url) \
