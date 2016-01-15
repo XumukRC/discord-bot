@@ -4,7 +4,7 @@ import discord
 import random
 
 from connect import bot
-import uploads
+import music
 
 @bot.event
 async def on_ready():

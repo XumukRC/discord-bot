@@ -16,7 +16,7 @@ async def on_message(message):
 		if mime.startswith(b"audio"):
 			db_conn = sqlite3.connect('uploads.db')
 			db_cur = db_conn.cursor()
-			db_cur.execute("INSERT INTO songs (uploader, url) \
-							VALUES ({0.author.name}, {1})".format(message, message.attachments[0]["url"]))
+			db_cur.execute("""INSERT INTO songs (uploader, url) \
+							VALUES ('{0.author.name}', '{1}')""".format(message, message.attachments[0]["url"]))
 			db_conn.commit()
 			db_conn.close()
