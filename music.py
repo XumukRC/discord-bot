@@ -30,6 +30,7 @@ bot_dj = DJ()
 		
 @bot.command(pass_context=True)
 async def join(context, channel_name : str):
+	global bot_dj
 	if bot.is_voice_connected():
 		await bot.say('Already connected to a voice channel')
 		
@@ -44,6 +45,7 @@ async def join(context, channel_name : str):
 	
 @bot.command()
 async def leave():
+	global bot_dj
 	#if not bot_dj.can_control_song(message.author):
 	#	return
 	#self.starter = None
@@ -51,6 +53,7 @@ async def leave():
 
 @bot.command()
 async def pause():
+	global bot_dj
 	#if not self.can_control_song(message.author):
 	#	fmt = 'Only the requester ({0.current.requester}) can control this song'
 	#	await self.send_message(message.channel, fmt.format(self))
@@ -59,6 +62,7 @@ async def pause():
 
 @bot.command()
 async def resume():
+	global bot_dj
 	#if not self.can_control_song(message.author):
 	#	fmt = 'Only the requester ({0.current.requester}) can control this song'
 	#	await self.send_message(message.channel, fmt.format(self))
@@ -71,6 +75,7 @@ async def resume():
 
 @bot.command()
 async def play():
+	global bot_dj
 	if bot_dj.player is not None and bot_dj.player.is_playing():
 		await bot.say('Already playing a song')
 		return
