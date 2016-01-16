@@ -83,10 +83,11 @@ async def play():
 		db_conn = sqlite3.connect('uploads.db')
 		db_cur = db_conn.cursor()
 		for song in db_cur.execute("""SELECT id, url FROM songs ORDER BY RANDOM()"""):
-			print("song row: {}".format(song))
-			bot_dj.songs.put(song[1])
+			print("song url: {}".format(song[1]))
+			await bot_dj.songs.put(song[1])
 		db_conn.close()
 	while True:
+		print("player start")
 		if not bot.is_voice_connected():
 			await bot.say('Not connected to a voice channel')
 			return
