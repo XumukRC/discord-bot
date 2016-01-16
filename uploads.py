@@ -4,8 +4,6 @@ import sqlite3
 import discord
 from connect import bot
 
-#CREATE TABLE songs (title text, artist text, uploader text, url text, date text)
-
 @bot.event
 async def on_message(message):
 	await bot.process_commands(message)
@@ -16,6 +14,13 @@ async def on_message(message):
 		if mime.startswith(b"audio"):
 			db_conn = sqlite3.connect('uploads.db')
 			db_cur = db_conn.cursor()
+			db_cur.execute("""CREATE TABLE IF NOT EXISTS 'songs' ( \
+							id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
+							title text, \
+							artist text, \
+							uploader text, \
+							url text, \
+							timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)""")
 			db_cur.execute("""INSERT INTO songs (uploader, url) \
 							VALUES ('{0.author.name}', '{1}')""".format(message, message.attachments[0]["url"]))
 			db_conn.commit()
