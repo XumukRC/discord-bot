@@ -79,7 +79,7 @@ async def play():
 	if bot_dj.player is not None and bot_dj.player.is_playing():
 		await bot.say('Already playing a song')
 		return
-	if not dj_bot.songs:
+	if not bot_dj.songs:
 		db_conn = sqlite3.connect('uploads.db')
 		db_cur = db_conn.cursor()
 		for song in db_cur.execute("""SELECT id, url FROM songs ORDER BY RANDOM()"""):
