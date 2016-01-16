@@ -25,7 +25,7 @@ async def on_message(message):
 		mime = magic.from_buffer(upload.content, mime=True)
 		print("{0} uplod registred".format(mime))
 		if mime.startswith(b"audio"):
-			bot.say("{0[0]['filename']} registred".format(message.attachments))
+			bot.say("{0} registred".format(message.attachments[0]['filename']))
 			db_conn = sqlite3.connect('uploads.db')
 			db_cur = db_conn.cursor()
 			db_cur.execute("""INSERT INTO songs (uploader, url) \
