@@ -30,7 +30,7 @@ def base64urlencode(data):
 	return data
  
 def a32_to_str(a):
-	return struct.pack('&gt;%dI' % len(a), *a)
+	return struct.pack('>%dI' % len(a), *a)
  
 def a32_to_base64(a):
 	return base64urlencode(a32_to_str(a))
@@ -38,7 +38,7 @@ def a32_to_base64(a):
 def str_to_a32(b):
 	if len(b) % 4: # Add padding, we need a string with a length multiple of 4
 		b += '\0' * (4 - len(b) % 4)
-	return struct.unpack('&gt;%dI' % (len(b) / 4), b)
+	return struct.unpack('>%dI' % (len(b) / 4), b)
  
 def base64_to_a32(s):
 	return str_to_a32(base64urldecode(s))
@@ -72,7 +72,7 @@ def prepare_key(a):
 		for j in xrange(0, len(a), 4):
 			key = [0, 0, 0, 0]
 			for i in xrange(4):
-				if i + j &lt; len(a):
+				if i + j < len(a):
 					key[i] = a[i + j]
 			pkey = aes_cbc_encrypt_a32(pkey, key)
 	return pkey
@@ -88,7 +88,7 @@ def mpi2int(s):
  
 def api_req(req):
 	global seqno
-	url = 'https://g.api.mega.co.nz/cs?id=%d%s' % (seqno, '&amp;sid=%s' % sid if sid else '')
+	url = 'https://g.api.mega.co.nz/cs?id=%d%s' % (seqno, '&sid=%s' % sid if sid else '')
 	seqno += 1
 	return json.loads(post(url, json.dumps([req])))[0]
  
@@ -115,7 +115,7 @@ def login(email, password):
 		rsa_priv_key = [0, 0, 0, 0]
  
 		for i in xrange(4): 
-			l = ((ord(privk[0]) * 256 + ord(privk[1]) + 7) / 8) + 2;
+			l = ((ord(privk[0]) * 256 + ord(privk[1]) + 7) / 8) + 2
 			rsa_priv_key[i] = mpi2int(privk[:l])
 			privk = privk[l:]
  
@@ -140,14 +140,14 @@ def get_chunks(size):
 	p = pp = 0
 	i = 1
  
-	while i &lt;= 8 and p &lt; size - i * 0x20000:
-		chunks[p] = i * 0x20000;
+	while i <= 8 and p < size - i * 0x20000:
+		chunks[p] = i * 0x20000
 		pp = p
 		p += chunks[p]
 		i += 1
  
-	while p &lt; size:
-		chunks[p] = 0x100000;
+	while p < size:
+		chunks[p] = 0x100000
 		pp = p
 		p += chunks[p]
  
@@ -163,7 +163,7 @@ def uploadfile(filename):
 	ul_url = api_req({'a': 'u', 's': size})['p']
  
 	ul_key = [random.randint(0, 0xFFFFFFFF) for _ in xrange(6)]
-	encryptor = AES.new(a32_to_str(ul_key[:4]), AES.MODE_CTR, counter = Counter.new(128, initial_value = ((ul_key[4] &lt;&lt; 32) + ul_key[5]) &lt;&lt; 64))
+	encryptor = AES.new(a32_to_str(ul_key[:4]), AES.MODE_CTR, counter = Counter.new(128, initial_value = ((ul_key[4] << 32) + ul_key[5]) << 64))
  
 	file_mac = [0, 0, 0, 0]
 	for chunk_start, chunk_size in sorted(get_chunks(size).items()):
@@ -200,7 +200,7 @@ def downloadfile(file, attributes, k, iv, meta_mac):
  
 	infile = urllib.urlopen(dl_url)
 	outfile = open(attributes['n'], 'wb')
-	decryptor = AES.new(a32_to_str(k), AES.MODE_CTR, counter = Counter.new(128, initial_value = ((iv[0] &lt;&lt; 32) + iv[1]) &lt;&lt; 64))
+	decryptor = AES.new(a32_to_str(k), AES.MODE_CTR, counter = Counter.new(128, initial_value = ((iv[0] << 32) + iv[1]) << 64))
  
 	file_mac = [0, 0, 0, 0]
 	for chunk_start, chunk_size in sorted(get_chunks(file['s']).items()):
