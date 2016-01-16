@@ -120,7 +120,7 @@ def login(email, password):
 			privk = privk[l:]
  
 		enc_sid = mpi2int(base64urldecode(res['csid']))
-		decrypter = RSA.construct((rsa_priv_key[0] * rsa_priv_key[1], 0L, rsa_priv_key[2], rsa_priv_key[0], rsa_priv_key[1]))
+		decrypter = RSA.construct((rsa_priv_key[0] * rsa_priv_key[1], 0, rsa_priv_key[2], rsa_priv_key[0], rsa_priv_key[1]))
 		sid = '%x' % decrypter.key._decrypt(enc_sid)
 		sid = binascii.unhexlify('0' + sid if len(sid) % 2 else sid)
 		sid = base64urlencode(sid[:43])
