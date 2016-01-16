@@ -78,6 +78,8 @@ def str_to_a32(b):
     if len(b) % 4:
         # pad to multiple of 4
         b += '\0' * (4 - len(b) % 4)
+	if type(b) is str:
+		b = b.encode()
     return struct.unpack('>%dI' % (len(b) / 4), b)
 
 
@@ -98,7 +100,7 @@ def base64_to_a32(s):
 
 def base64_url_encode(data):
     data = base64.b64encode(data)
-    for search, replace in (('+', '-'), ('/', '_'), ('=', '')):
+    for search, replace in ((b'+', b'-'), (b'/', b'_'), (b'=', b'')):
         data = data.replace(search, replace)
     return data
 
