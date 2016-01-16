@@ -18,7 +18,7 @@ class DJ:
 		self.current = None
 
 	def toggle_next_song(self):
-		self.loop.call_soon_threadsafe(self.play_next_song.set)
+		bot.loop.call_soon_threadsafe(self.play_next_song.set)
 
 	def can_control_song(self, author):
 		return author == self.starter or (self.current is not None and author == self.current.requester)
@@ -83,11 +83,9 @@ async def play():
 		db_conn = sqlite3.connect('uploads.db')
 		db_cur = db_conn.cursor()
 		for song in db_cur.execute("""SELECT id, url FROM songs ORDER BY RANDOM()"""):
-			print("song url: {}".format(song[1]))
 			await bot_dj.songs.put(song[1])
 		db_conn.close()
 	while True:
-		print("player start")
 		if not bot.is_voice_connected():
 			await bot.say('Not connected to a voice channel')
 			return
