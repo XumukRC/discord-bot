@@ -69,9 +69,11 @@ async def resume():
 	if bot_dj.player is not None and not bot_dj.is_playing():
 		bot_dj.player.resume()
 
-#@bot.command()
-#async def skip():
-#
+@bot.command()
+async def skip():
+	if bot_dj.player is not None and not bot_dj.is_playing():
+		bot_dj.player.stop()
+		bot_dj.toggle_next_song()
 
 @bot.command()
 async def play():
