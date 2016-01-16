@@ -23,6 +23,7 @@ async def on_message(message):
 	if message.channel.name == "uploads_test" and message.attachments:
 		upload = requests.get(message.attachments[0]["url"])
 		mime = magic.from_buffer(upload.content, mime=True)
+		print("{0} uplod registred".format(mime))
 		if mime.startswith(b"audio"):
 			bot.say("{0[0]['filename']} registred".format(message.attachments))
 			db_conn = sqlite3.connect('uploads.db')
