@@ -193,7 +193,7 @@ def uploadfile(filename):
 	attributes = {'n': os.path.basename(filename)}
 	enc_attributes = enc_attr(attributes, ul_key[:4])
 	key = [ul_key[0] ^ ul_key[4], ul_key[1] ^ ul_key[5], ul_key[2] ^ meta_mac[0], ul_key[3] ^ meta_mac[1], ul_key[4], ul_key[5], meta_mac[0], meta_mac[1]]
-	print api_req({'a': 'p', 't': root_id, 'n': [{'h': completion_handle, 't': 0, 'a': base64urlencode(enc_attributes), 'k': a32_to_base64(encrypt_key(key, master_key))}]})
+	print(api_req({'a': 'p', 't': root_id, 'n': [{'h': completion_handle, 't': 0, 'a': base64urlencode(enc_attributes), 'k': a32_to_base64(encrypt_key(key, master_key))}]}))
  
 def downloadfile(file, attributes, k, iv, meta_mac):
 	dl_url = api_req({'a': 'g', 'g': 1, 'n': file['h']})['g']
@@ -224,7 +224,7 @@ def downloadfile(file, attributes, k, iv, meta_mac):
 	infile.close()
  
 	if (file_mac[0] ^ file_mac[1], file_mac[2] ^ file_mac[3]) != meta_mac:
-		print "MAC mismatch"
+		print("MAC mismatch")
  
 def getfiles():
 	global root_id, inbox_id, trashbin_id
@@ -242,7 +242,7 @@ def getfiles():
 				k = key
 			attributes = base64urldecode(file['a'])
 			attributes = dec_attr(attributes, k)
-			print attributes['n']
+			print(attributes['n'])
  
 			if file['h'] == '0wFEFCTa':
 				downloadfile(file, attributes, k, iv, meta_mac)
