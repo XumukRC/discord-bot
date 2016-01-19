@@ -8,7 +8,7 @@ from connect import bot
 import uploads
 from settings import settings
 
-import api.pycopy
+import api.pycopy as pycopy
 
 
 if not discord.opus.is_loaded():
