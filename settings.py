@@ -8,18 +8,18 @@ class Settings:
 	def bot_auth(self):
 		db_conn = sqlite3.connect(self.database)
 		db_cur = db_conn.cursor()
-		reqst = db_cur.execute("SELECT bot_login, bot_passwd FROM settings").fetchone()
-		auth_data = {'login': reqst[0], 'passwd': reqst[1]}
+		login  = db_cur.execute("SELECT value FROM settings WHERE setting='bot_login'").fetchone()[0]
+		passwd = db_cur.execute("SELECT value FROM settings WHERE setting='bot_passwd'").fetchone()[0]
 		db_conn.close()
-		return auth_data
+		return {'login': login, 'passwd': pqsswd}
 		
 	def copy_auth(self):
 		db_conn = sqlite3.connect(self.database)
 		db_cur = db_conn.cursor()
-		reqst = db_cur.execute("SELECT copy_login, copy_passwd FROM settings").fetchone()
-		auth_data = {'login': reqst[0], 'passwd': reqst[1]}
+		login  = db_cur.execute("SELECT value FROM settings WHERE setting='copy_login'").fetchone()[0]
+		passwd = db_cur.execute("SELECT value FROM settings WHERE setting='copy_passwd'").fetchone()[0]
 		db_conn.close()
-		return auth_data
+		return {'login': login, 'passwd': pqsswd}
 		
 settings = Settings()
 		
