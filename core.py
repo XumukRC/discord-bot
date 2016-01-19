@@ -3,8 +3,10 @@
 import discord
 import random
 
+from settings import settings
 from connect import bot
 import music
+import search
 
 @bot.event
 async def on_ready():
@@ -50,5 +52,10 @@ async def cool(ctx):
 async def haitaka():
     await bot.say('Yes, Haitaka is cool.')
 	
+@cool.command()
+async def child():
+    await bot.say('Yes, Child is cool.')
 	
-bot.run('haitaka@yandex.ru', '22:=Kp|/|cToF')
+
+bot_auth = settings.bot_auth()
+bot.run(bot_auth['login'], bot_auth['passwd'])

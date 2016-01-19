@@ -1,5 +1,4 @@
 import asyncio
-import sqlite3
 from os import listdir
 from os.path import isfile, join
 import random
@@ -7,10 +6,13 @@ import random
 import discord
 from connect import bot
 import uploads
+from settings import settings
+
+import api.pycopy
 
 
 if not discord.opus.is_loaded():
-	discord.opus.load_opus('/usr/local/lib/libopus.so')
+	discord.opus.load_opus('/usr/local/lib/libopus.so') #FreeBSD path
 
 class Radio:
 	def __init__(self):
@@ -19,9 +21,8 @@ class Radio:
 		#self.starter = None
 		self.player = None
 		self.current = None
-		self.files_dir = "copyfs/radio/"
-		# list ONLY files
-		self.files = [f for f in listdir(self.files_dir) if isfile(join(self.files_dir, f))]
+		self.copycom = pycopy.Copy(settings.copy_auth()['login'], settings.copy_auth()['passwd'])
+		self.files = self.copycom.list_files(self, settings.copy_radio_path)
 
 	def toggle_next_song(self):
 		bot.loop.call_soon_threadsafe(self.play_next_song.set)
@@ -35,7 +36,8 @@ class Radio:
 	async def random_q(self):
 		q = random.sample(self.files, len(self.files))
 		for song in q:
-			await self.songs.put(self.files_dir + song)
+			song_path = settings.copy_radio_path + song
+			await self.songs.put(self.copycom.direct_link(song_path))
 
 radio = Radio()
 		
@@ -57,9 +59,6 @@ async def join(context, channel_name : str):
 @bot.command()
 async def leave():
 	global radio
-	#if not radio.can_control_song(message.author):
-	#	return
-	#self.starter = None
 	await bot.voice.disconnect()
 
 @bot.command()
@@ -74,9 +73,6 @@ async def pause():
 @bot.command()
 async def resume():
 	global radio
-	#if not self.can_control_song(message.author):
-	#	fmt = 'Only the requester ({0.current.requester}) can control this song'
-	#	await self.send_message(message.channel, fmt.format(self))
 	if radio.player is not None and not radio.is_playing():
 		radio.player.resume()
 
@@ -85,6 +81,12 @@ async def skip():
 	if radio.player.is_playing():
 		radio.player.stop()
 		radio.toggle_next_song()
+		
+@bot.command()
+async def stop():
+	global radio
+	if radio.player.is_playing():
+		radio.player.stop()
 
 @bot.group(pass_context=True)
 async def play(ctx):
@@ -104,6 +106,6 @@ async def play(ctx):
 		radio.player = bot.voice.create_ffmpeg_player(radio.current, after=radio.toggle_next_song)
 		radio.player.start()
 		fmt = 'Playing song "{0}"'
-		await bot.say(fmt.format(radio.current))
+		await bot.say(fmt.format(radio.current.split('/')[-1]))
 		await radio.play_next_song.wait()
 	
