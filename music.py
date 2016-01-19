@@ -22,7 +22,7 @@ class Radio:
 		self.player = None
 		self.current = None
 		self.copycom = pycopy.Copy(settings.copy_auth()['login'], settings.copy_auth()['passwd'])
-		self.files = self.copycom.list_files(self, settings.copy_radio_path)
+		self.files = self.copycom.list_files(settings.copy_radio_path)
 
 	def toggle_next_song(self):
 		bot.loop.call_soon_threadsafe(self.play_next_song.set)
