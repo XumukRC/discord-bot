@@ -4,6 +4,7 @@ import json
 
 import requests
 
+__version__ = '0.1.2-dev'
 USER_AGENT = 'pycopy/{}'.format(__version__)
 BASE_URL = 'https://api.copy.com'
 AUTH_URL = BASE_URL + '/auth_user'  # TODO: should use /rest
