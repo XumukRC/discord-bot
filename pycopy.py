@@ -38,26 +38,15 @@ class Copy(object):
 		self.auth_token = json_response['auth_token']
 		self.session.headers.update({'X-Authorization': self.auth_token, })
 
-	def files_list_folder(self, path, recursive=False):
-		response = self._post(OBJECTS_URL, {'path': path, })
-		# TODO: implement recursive=True
-		return response
+	def list_files(self, dir_path):
+		response = self._post(OBJECTS_URL, {'path': dir_path, })
+		flist = []
+		for file in response.json()['children']:
+			if file['type'] == 'file':
+				flist.append(file['path'].split("/")[-1])
+		return flist
 
-	def files_download(self, path):
-		object_url = BASE_URL + '/rest/meta/copy/' + path
-		# TODO: '/copy' may not be needed
+	def direct_link(self, file_path):
+		object_url = BASE_URL + '/rest/meta/copy/' + file_path
 		response = self.session.get(object_url)
-		url = response.json()['url']
-		# or: self.user_data['user_id']
-		# https://copy.com/web/users/user-{user_id}/copy/{path}
-		return self._get(url)
-
-	def get(self, path):
-		response = self._post(DOWNLOAD_URL, {'path': path})
-		return response
-
-	def put_object(self, path, fobj):
-		object_url = BASE_URL + '/rest/meta/copy/' + path
-		response = self.session.post(object_url, files={'file': fobj})
-		# TODO: change filename when sending
-		return response.json()
+		return response.json()['url']
