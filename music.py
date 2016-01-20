@@ -2,6 +2,7 @@ import asyncio
 from os import listdir
 from os.path import isfile, join
 import random
+from urllib.parse import unquote
 
 import discord
 from connect import bot
@@ -106,6 +107,7 @@ async def play(ctx):
 		radio.player = bot.voice.create_ffmpeg_player(radio.current, after=radio.toggle_next_song)
 		radio.player.start()
 		fmt = 'Playing song "{0}"'
-		await bot.say(fmt.format(radio.current.split('/')[-1]))
+		#await bot.say(fmt.format(unquote(radio.current.split('/')[-1])))
+		await bot.say(fmt.format(unquote(radio.current)))
 		await radio.play_next_song.wait()
 	
