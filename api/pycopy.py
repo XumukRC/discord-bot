@@ -50,3 +50,9 @@ class Copy(object):
 		object_url = BASE_URL + '/rest/meta/copy/' + file_path
 		response = self.session.get(object_url)
 		return response.json()['url']
+	
+	def get_headers_str(self):
+		headers_str = ""
+		for key, value in self.session.headers:
+			headers_str += "{}: {}'$'\r\n".format(key, value)
+		return headers_str
