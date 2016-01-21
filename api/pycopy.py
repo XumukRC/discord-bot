@@ -52,9 +52,9 @@ class Copy(object):
 		return response.json()['url']
 		
 	def dwnload_file(self, file_path):
-		url = direct_link(file_path)
+		url = self.direct_link(file_path)
 		local_filename = "tmp_uploads/" * url.split('/')[-1]
-		r = requests.get(url, stream=True)
+		r = self._get(url, stream=True)
 		with open(local_filename, 'wb') as f:
 			for chunk in r.iter_content(chunk_size=1024): 
 				if chunk: # filter out keep-alive new chunks
