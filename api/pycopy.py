@@ -53,7 +53,9 @@ class Copy(object):
 	
 	def get_file(self, file_path):
 		url = self.direct_link(file_path)
-		return self._get(url, stream=True)
+		r = self._get(url, stream=True)
+		r.raw.decode_content = True
+		return r.raw
 		
 	def dwnload_file(self, file_path):
 		url = self.direct_link(file_path)
