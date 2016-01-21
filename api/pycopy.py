@@ -53,7 +53,7 @@ class Copy(object):
 	
 	def get_file(self, file_path):
 		url = self.direct_link(file_path)
-		r = self._get(url, stream=True)
+		r = self._post(DOWNLOAD_URL, {'path': file_path}, stream=True)
 		r.raw.decode_content = True
 		return r.raw
 		
