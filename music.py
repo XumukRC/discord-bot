@@ -38,7 +38,7 @@ class Radio:
 		q = random.sample(self.files, len(self.files))
 		for song in q:
 			song_path = settings.copy_radio_path + song
-			await self.songs.put(unquote(self.copycom.direct_link(song_path)))
+			await self.songs.put(song_path)
 
 radio = Radio()
 		
@@ -104,7 +104,7 @@ async def play(ctx):
 
 		radio.play_next_song.clear()
 		radio.current = await radio.songs.get()
-		radio.player = bot.voice.create_ffmpeg_player(radio.current, after=radio.toggle_next_song, options="-headers '{}' -loglevel debug -report".format(radio.copycom.get_headers_str()))
+		radio.player = bot.voice.create_ffmpeg_player(get_file(radio.current), after=radio.toggle_next_song, options="-loglevel debug")
 		radio.player.start()
 		fmt = 'Playing song "{0}"'
 		#await bot.say(fmt.format(unquote(radio.current.split('/')[-1])))

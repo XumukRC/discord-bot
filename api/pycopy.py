@@ -50,6 +50,10 @@ class Copy(object):
 		object_url = BASE_URL + '/rest/meta/copy/' + file_path
 		response = self.session.get(object_url)
 		return response.json()['url']
+	
+	def get_file(self, file_path):
+		url = self.direct_link(file_path)
+		return self._get(url, stream=True)
 		
 	def dwnload_file(self, file_path):
 		url = self.direct_link(file_path)
