@@ -64,6 +64,6 @@ class Copy(object):
 	
 	def get_headers_str(self):
 		headers_str = ""
-		for key, value in self.session.headers:
-			headers_str += "{}: {}'$'\r\n".format(key, value)
+		for key, value in self.session.headers.items():
+			headers_str += "{}: {}\r\n".format(key, value)
 		return headers_str
