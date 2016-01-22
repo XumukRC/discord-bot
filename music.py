@@ -103,8 +103,9 @@ async def play(ctx):
 			return
 
 		radio.play_next_song.clear()
+		radio.current = await radio.songs.clear()
 		radio.current = await radio.songs.get()
-		radio.player = bot.voice.create_ffmpeg_player(radio.copycom.get_file(radio.current), after=radio.toggle_next_song, options="-loglevel debug", pipe=True)
+		radio.player = bot.voice.create_ffmpeg_player(radio.current, after=radio.toggle_next_song)
 		radio.player.start()
 		fmt = 'Playing song "{0}"'
 		#await bot.say(fmt.format(unquote(radio.current.split('/')[-1])))
