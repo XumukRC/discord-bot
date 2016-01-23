@@ -1,8 +1,9 @@
 import asyncio
-from os import listdir
+from os import listdir, system
 from os.path import isfile, join
 import random
 from urllib.parse import unquote
+from collections import deque
 
 import discord
 from connect import bot
@@ -17,7 +18,8 @@ if not discord.opus.is_loaded():
 
 class Radio:
 	def __init__(self):
-		self.songs = asyncio.Queue()
+		#self.songs = asyncio.Queue()
+		self.songs = deque()
 		self.play_next_song = asyncio.Event()
 		#self.starter = None
 		self.player = None
@@ -35,14 +37,16 @@ class Radio:
 		return self.player is not None and self.player.is_playing()
 	
 	async def test_q(self):
-		await self.songs.put(self.copycom.direct_link("test.mp3"))
+		#await self.songs.put(self.copycom.direct_link("test.mp3"))
+		self.songs.append(self.copycom.direct_link("test.mp3"))
 
 	async def random_q(self):
 		q = random.sample(self.files, len(self.files))
 		for song in q:
 			song_path = settings.copy_radio_path + song
 			#print(song_path)
-			await self.songs.put(song_path)
+			#await self.songs.put(song_path)
+			self.songs.append(song_path)
 
 radio = Radio()
 		
@@ -64,6 +68,9 @@ async def join(context, channel_name : str):
 @bot.command()
 async def leave():
 	global radio
+	if radio.player.is_playing():
+		radio.player.stop()
+	system("killall ffmpeg")
 	await bot.voice.disconnect()
 
 @bot.command()
@@ -99,7 +106,7 @@ async def play(ctx):
 	if radio.player is not None and radio.player.is_playing():
 		await bot.say('Already playing a song')
 		return
-	if radio.songs.empty() and ctx.invoked_subcommand is None:
+	if len(radio.songs) == 0 and ctx.invoked_subcommand is None:
 		await radio.random_q()
 	while True:
 		if not bot.is_voice_connected():
@@ -107,7 +114,8 @@ async def play(ctx):
 			return
 
 		radio.play_next_song.clear()
-		radio.current = await radio.songs.get()
+		#radio.current = await radio.songs.get()
+		radio.current = radio.songs.popleft()
 		#print(radio.current)
 		radio.player = bot.voice.create_ffmpeg_player(radio.copycom.direct_link(radio.current), after=radio.toggle_next_song, options="-headers '{}' -loglevel debug -report".format(radio.copycom.get_headers_str()))
 		radio.player.start()
@@ -115,4 +123,34 @@ async def play(ctx):
 		await bot.say(fmt.format(unquote(radio.current.split('/')[-1])))
 		#await bot.say(fmt.format(unquote(radio.current)))
 		await radio.play_next_song.wait()
+		
+
+@bot.command()
+async def list():
+	global radio
+	song_list = ""
+	id = 0
+	for song in radio.files:
+		song_list += "{}. {}\n".format(id, song)
+		id += 1
+	await bot.say(song_list)
 	
+@bot.group(pass_context=True)
+async def q(ctx):
+	global radio
+	if ctx.invoked_subcommand is None:
+		song_list = ""
+		id = 0
+		for song in radio.songs:
+			song_list += "{}. {}\n".format(id, song)
+			id += 1
+		await bot.say(song_list)
+		
+@q.command()
+async def random():
+	global radio
+	await radio.random_q()
+	await bot.say("Random Queue generated.")
+
+		
+
