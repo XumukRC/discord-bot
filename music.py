@@ -68,7 +68,7 @@ async def join(context, channel_name : str):
 @bot.command()
 async def leave():
 	global radio
-	if radio.player.is_playing():
+	if radio and radio.player.is_playing():
 		radio.player.stop()
 	system("killall ffmpeg")
 	await bot.voice.disconnect()
