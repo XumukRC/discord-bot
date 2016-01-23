@@ -1,7 +1,7 @@
 import asyncio
 from os import listdir, system
 from os.path import isfile, join
-import random
+import random.sample as shuffled
 from urllib.parse import unquote
 from collections import deque
 
@@ -41,7 +41,7 @@ class Radio:
 		self.songs.append(self.copycom.direct_link("test.mp3"))
 
 	async def random_q(self):
-		q = random.sample(self.files, len(self.files))
+		q = shuffled(self.files, len(self.files))
 		for song in q:
 			song_path = settings.copy_radio_path + song
 			#print(song_path)
@@ -128,23 +128,23 @@ async def play(ctx):
 @bot.command()
 async def list():
 	global radio
-	song_list = ""
+	#song_list = ""
 	id = 0
 	for song in radio.files:
-		song_list += "{}. {}\n".format(id, song)
+		await bot.say("{}. {}\n".format(id, song))
 		id += 1
-	await bot.say(song_list)
+	#await bot.say(song_list)
 	
 @bot.group(pass_context=True)
 async def q(ctx):
 	global radio
 	if ctx.invoked_subcommand is None:
-		song_list = ""
+		#song_list = ""
 		id = 0
 		for song in radio.songs:
-			song_list += "{}. {}\n".format(id, song)
+		await bot.say("{}. {}\n".format(id, song))
 			id += 1
-		await bot.say(song_list)
+		#await bot.say(song_list)
 		
 @q.command()
 async def random():
