@@ -1,7 +1,7 @@
 import asyncio
 from os import listdir, system
 from os.path import isfile, join
-import random.sample as shuffled
+import random as rand_mdl
 from urllib.parse import unquote
 from collections import deque
 
@@ -41,7 +41,7 @@ class Radio:
 		self.songs.append(self.copycom.direct_link("test.mp3"))
 
 	async def random_q(self):
-		q = shuffled(self.files, len(self.files))
+		q = rand_mdl.sample(self.files, len(self.files))
 		for song in q:
 			song_path = settings.copy_radio_path + song
 			#print(song_path)
