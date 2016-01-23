@@ -142,7 +142,7 @@ async def q(ctx):
 		#song_list = ""
 		id = 0
 		for song in radio.songs:
-		await bot.say("{}. {}\n".format(id, song))
+			await bot.say("{}. {}\n".format(id, song))
 			id += 1
 		#await bot.say(song_list)
 		
