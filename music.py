@@ -41,6 +41,7 @@ class Radio:
 		q = random.sample(self.files, len(self.files))
 		for song in q:
 			song_path = settings.copy_radio_path + song
+			#print(song_path)
 			await self.songs.put(song_path)
 
 radio = Radio()
@@ -99,7 +100,7 @@ async def play(ctx):
 		await bot.say('Already playing a song')
 		return
 	if radio.songs.empty() and ctx.invoked_subcommand is None:
-		await radio.test_q()
+		await radio.random_q()
 	while True:
 		if not bot.is_voice_connected():
 			await bot.say('Not connected to a voice channel')
@@ -107,6 +108,7 @@ async def play(ctx):
 
 		radio.play_next_song.clear()
 		radio.current = await radio.songs.get()
+		#print(radio.current)
 		radio.player = bot.voice.create_ffmpeg_player(radio.copycom.direct_link(radio.current), after=radio.toggle_next_song, options="-headers '{}' -loglevel debug -report".format(radio.copycom.get_headers_str()))
 		radio.player.start()
 		fmt = 'Playing song "{0}"'
