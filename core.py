@@ -55,7 +55,10 @@ async def haitaka():
 @cool.command()
 async def child():
     await bot.say('Yes, Child is cool.')
+    
+@cool.command()
+async def xumuk():
+    await bot.say('Yes, Xumuk is cool.')  
 	
-
 bot_auth = settings.bot_auth()
 bot.run(bot_auth['login'], bot_auth['passwd'])
