@@ -128,23 +128,29 @@ async def play(ctx):
 @bot.command()
 async def list():
 	global radio
-	#song_list = ""
+	song_list = ""
 	id = 0
 	for song in radio.files:
-		await bot.say("{}. {}\n".format(id, song))
+		song_list += "{}. {}\n".format(id, song)
 		id += 1
-	#await bot.say(song_list)
+		if len(song_list) > 1900:
+		await bot.say(song_list)
+		song_list = ''
+	await bot.say(song_list)
 	
 @bot.group(pass_context=True)
 async def q(ctx):
 	global radio
 	if ctx.invoked_subcommand is None:
-		#song_list = ""
+		song_list = ""
 		id = 0
 		for song in radio.songs:
-			await bot.say("{}. {}\n".format(id, song))
+			song_list += "{}. {}\n".format(id, song)
 			id += 1
-		#await bot.say(song_list)
+			if len(song_list) > 1900:
+				await bot.say(song_list)
+				song_list = ''
+		await bot.say(song_list)
 		
 @q.command()
 async def random():
